@@ -20,7 +20,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-km&-i2iyq386d0c(s6w6=(^7fsc7o2f(v4&+lo@2%ti_+bx0+%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -79,12 +78,6 @@ WSGI_APPLICATION = 'markproject.wsgi.application'
 DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mark1db',
-        'USER': 'postgres',
-        'PASSWORD': 'AaroIndian',
-        'HOST': 'mark1db.c9agic0am5y7.us-east-1.rds.amazonaws.com',   
-        'PORT': '5432',
     }
 }
 
@@ -127,15 +120,3 @@ STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AWS_ACCESS_KEY_ID = 'AKIA2N4PYUIXX3B7GX6U '
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'seedmark1'
-AWS_S3_SIGNATURE_NAME = 's3v4',
-AWS_S3_REGION_NAME = 'us-east-1'
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL =  None
-AWS_S3_VERITY = True
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' 
