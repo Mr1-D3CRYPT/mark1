@@ -81,7 +81,7 @@ DATABASES = {
         'NAME': 'mark1db',
         'USER': 'postgres',
         'PASSWORD': 'AaroIndian',
-        'HOST': 'localhost',   #mark1db.c9agic0am5y7.us-east-1.rds.amazonaws.com
+        'HOST': 'mark1db.c9agic0am5y7.us-east-1.rds.amazonaws.com',   
         'PORT': '5432',
     }
 }
@@ -128,12 +128,12 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#AWS_ACCESS_KEY_ID = 'AKIA2N4PYUIXX3B7GX6U '
-#AWS_SECRET_ACCESS_KEY = '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'
-#AWS_STORAGE_BUCKET_NAME = 'seedmark1'
-#AWS_S3_SIGNATURE_NAME = 's3v4',
-#AWS_S3_REGION_NAME = 'us-east-1'
-#AWS_S3_FILE_OVERWRITE = False
-#AWS_DEFAULT_ACL =  None
-#AWS_S3_VERITY = True
-#DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' 
+AWS_ACCESS_KEY_ID = 'AKIA2N4PYUIXX3B7GX6U '
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'seedmark1'
+AWS_S3_SIGNATURE_NAME = 's3v4',
+AWS_S3_REGION_NAME = 'us-east-1'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL =  None
+AWS_S3_VERITY = True
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' 
