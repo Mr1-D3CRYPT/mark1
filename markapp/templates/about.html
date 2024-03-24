@@ -1,0 +1,75 @@
+{%extends "base.html"%}
+{%block content%}
+
+{% load static %}
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="index" class="logo">
+                        <h2 style="color:rgb(169, 51, 104)">Mark-1</h2>
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li><a href="index">Home</a></li>
+                        <li><a href="about" class="active">About</a></li>
+                        <li><a href="contact">Contact us</a></li>
+                        {% if user.is_authenticated %}
+                        <li><a href="profile">Profile <img src="{% static 'assets/images/' %}" alt=""></a></li>
+                        {% else %}
+                        <li><a href="login_view">Log in</a></li>                        
+                        {% endif %}
+                    </ul>   
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                </nav>
+            </div>
+        </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** --> 
+
+
+          <!-- ***** About section start ***** -->
+          <div class="start-stream">
+            <div class="col-lg-12">
+              <div class="heading-section">
+                <img src="{% static 'assets/images/zurich.pn' %}g" alt="" style="max-width: 60px; border-radius: 50%;">
+                <h4>Zurich tech</h4>
+              </div>
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="item">
+                    <h4>About us</h4>
+                    <p> 
+                      Welcome to Zurich Tech - Where Innovation Meets Excellence!
+                      
+                      At Zurich Tech, we are dedicated to pushing the boundaries of technology to create a future where possibilities are limitless. As a leading tech-based company, we specialize in developing cutting-edge solutions that empower businesses, individuals, and communities to thrive in the digital era. 
+                    </p>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="item">
+                    <h4>Our Vision</h4>
+                    <p>At the core of our identity is a vision of a world transformed by technology, where challenges are met with innovative solutions, and every individual has the tools they need to reach their full potential. We envision a future where technology serves as an enabler for positive change, driving progress and enhancing the quality of life for everyone.</p>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="item">
+                    <h4>Who We Are</h4>
+                    <p>Zurich Tech is a dynamic team of passionate professionals with diverse expertise in software development, artificial intelligence, cybersecurity, and more. Our talented individuals bring a wealth of experience from various industries, fostering a collaborative environment that fuels creativity and excellence.</p>
+                  </div>
+                </div>
+               </div>
+            </div>
+          </div>
+          <!-- ***** About section end ***** -->
+  
+{%endblock%}

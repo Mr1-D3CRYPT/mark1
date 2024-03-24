@@ -1,0 +1,99 @@
+{%extends "base.html"%}
+{%block content%}
+
+{% load static %}
+
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="index" class="logo">
+                        <h2 style="color:rgb(169, 51, 104)">Mark-1</h2>
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li><a href="index" class="active">Home</a></li>
+                        <li><a href="about">About</a></li>
+                        <li><a href="contact">Contact us</a></li>
+                        {% if user.is_authenticated %}
+                        <li><a href="profile">Profile <img src="{% static 'assets/images/' %}" alt=""></a></li>
+                        {% else %}
+                        <li><a href="login_view">Log in</a></li>                        
+                        {% endif %}
+                    </ul>   
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                </nav>
+            </div>
+        </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page-content">
+
+          <!-- ***** Banner Start ***** -->
+          <div class="main-banner">
+            <div class="row">
+              <div class="col-lg-7">
+                <div class="header-text">
+                  <h6>Welcome To Our world</h6>
+                  <h4>Our man marks you attendance!!</h4>
+                  <div class="main-button">
+                    <a href="profile">View yours</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ***** Banner End ***** -->
+
+          <!-- ***** Most Popular Start ***** -->
+          <div class="most-popular">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="heading-section">
+                  <h4><em>Most Popular</em> Right Now</h4>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <img src="{% static 'assets/images/fav.png' %}" alt="">
+                      <h4>Mark-1</h4>
+                      <ul>
+                        <li><i class="fa fa-star"></i> 4.8</li>
+                        <li><i class="fa fa-download"></i> 2.3M</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <img src="{% static 'assets/images/prithvi.png' %}" alt="">
+                      <h4>Prithvi-I<br><span>The cute robot</span></h4>
+                      <ul>
+                        <li><i class="fa fa-star"></i> 4.8</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ***** Most Popular End ***** -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+{%endblock%}
