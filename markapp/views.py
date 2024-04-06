@@ -2,6 +2,8 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User,Group
+import face_recognition as fr
+import cv2 as cv
 
 
 def index(request):

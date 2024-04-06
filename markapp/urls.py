@@ -9,11 +9,6 @@ urlpatterns = [
     path('about', views.about),
     path('contact', views.contact),
     path('profile',views.profile),
-
     path('login_view',views.login_view),
     path('logout_view',views.logout_view),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_URL)        
