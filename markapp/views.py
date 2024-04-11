@@ -2,9 +2,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User,Group
-import face_recognition as fr
-import cv2 as cv
-
+import cv2
 
 def index(request):
     return render(request, 'index.html')
@@ -42,3 +40,42 @@ def profile(request):
 def logout_view(request):
     logout(request)
     return redirect('/login_view')
+
+def take_attendance():
+    face_classifier = cv2.CascadeClassifier(
+        cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
+    )
+
+    import face_recognition
+    image = face_recognition.load_image_file("your_file.jpg")
+    face_locations = face_recognition.face_locations(image)
+
+    video_capture = cv2.VideoCapture(0)
+
+    def detect_bounding_box(frame):
+        gray_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        faces = face_classifier.detectMultiScale(gray_image, 1.1, 5, minSize=(40, 40))
+        for (x, y, w, h) in faces:
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+        return faces
+
+    while True:
+
+        result, video_frame = video_capture.read()  # read frames from the video
+        if result is False:
+            break  # terminate the loop if the frame is not read successfully
+
+        faces = detect_bounding_box(
+            video_frame
+        )  # apply the function we created to the video frame
+
+        cv2.imshow(
+            "My Face Detection Project", video_frame
+        )  # display the processed frame in a window named "My Face Detection Project"
+
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            break
+
+    video_capture.release()
+    cv2.destroyAllWindows()
+    return redirect('/profile')
