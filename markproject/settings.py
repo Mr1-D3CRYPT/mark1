@@ -9,7 +9,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-km&-i2iyq386d0c(s6w6=(^7fsc7o2f(v4&+lo@2%ti_+bx0+%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -66,12 +65,15 @@ WSGI_APPLICATION = 'markproject.wsgi.application'
 DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
+<<<<<<< HEAD
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'mark1db',
         'USER': 'postgres',
         'PASSWORD': 'AaroIndian',
         'HOST': 'localhost',   
         'PORT': '5432',
+=======
+>>>>>>> a0d27bb36cffc90ad835b25155c670b79c2d2c12
     }
 }
 
@@ -115,5 +117,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'markapp','media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+<<<<<<< HEAD
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+=======
+>>>>>>> a0d27bb36cffc90ad835b25155c670b79c2d2c12
