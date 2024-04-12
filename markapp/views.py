@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User,Group
+from markapp.models import Student,Teacher
 import cv2
 
 def index(request):
@@ -33,7 +34,10 @@ def profile(request):
     if user.is_authenticated:
         if user.groups.filter(name='teacher').exists():
             post = "teacher"
-        return render(request, 'profile.html', {"post":post})
+            profile = Teacher.objects.all()
+        else:
+            profile = Student.objects.all()
+        return render(request, 'profile.html', {"post":post,"profile":profile})
     else:
         return redirect('/login_view')
 
@@ -41,41 +45,60 @@ def logout_view(request):
     logout(request)
     return redirect('/login_view')
 
-def take_attendance():
-    face_classifier = cv2.CascadeClassifier(
-        cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
-    )
-
+def take_attendance(request):
     import face_recognition
-    image = face_recognition.load_image_file("your_file.jpg")
-    face_locations = face_recognition.face_locations(image)
+    import os
 
+    # Load known images and create face encodings
+    def load_images_from_folder(folder):
+        images = {}
+        for filename in os.listdir(folder):
+            img = face_recognition.load_image_file(os.path.join(folder, filename))
+            if img is not None:
+                images[filename.split(".")[0]] = face_recognition.face_encodings(img)[0]
+        return images
+
+    known_images = load_images_from_folder("markapp\static\\assets\images\\face_pics")
+
+    # Get a reference to webcam #0 (the default one)
     video_capture = cv2.VideoCapture(0)
 
-    def detect_bounding_box(frame):
-        gray_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        faces = face_classifier.detectMultiScale(gray_image, 1.1, 5, minSize=(40, 40))
-        for (x, y, w, h) in faces:
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
-        return faces
-
     while True:
+        # Grab a single frame of video
+        ret, frame = video_capture.read()
 
-        result, video_frame = video_capture.read()  # read frames from the video
-        if result is False:
-            break  # terminate the loop if the frame is not read successfully
+        # Find all the faces and face encodings in the current frame of video
+        face_locations = face_recognition.face_locations(frame)
+        face_encodings = face_recognition.face_encodings(frame, face_locations)
 
-        faces = detect_bounding_box(
-            video_frame
-        )  # apply the function we created to the video frame
+        # Loop over each face found in the frame
+        for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
+            # See if the face is a match for the known face(s)
+            matches = face_recognition.compare_faces(list(known_images.values()), face_encoding)
 
-        cv2.imshow(
-            "My Face Detection Project", video_frame
-        )  # display the processed frame in a window named "My Face Detection Project"
+            name = "Unknown"
 
-        if cv2.waitKey(1) & 0xFF == ord("q"):
+            # If a match was found in known_face_encodings, just use the first one.
+            if True in matches:
+                first_match_index = matches.index(True)
+                name = list(known_images.keys())[first_match_index]
+
+            # Draw a box around the face
+            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+
+            # Draw a label with a name below the face
+            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+            font = cv2.FONT_HERSHEY_DUPLEX
+            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+
+        # Display the resulting image
+        cv2.imshow('Video', frame)
+
+        # Hit 'q' on the keyboard to quit!
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
+    # Release handle to the webcam
     video_capture.release()
     cv2.destroyAllWindows()
     return redirect('/profile')

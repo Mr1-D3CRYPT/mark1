@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class Teacher(models.Model):
     id = models.CharField(max_length = 50, primary_key=True)
     name = models.CharField(max_length=255)
-    pic = models.FileField(upload_to='markapp/static/assets/images/face_pics/')
+    pic = models.FileField(upload_to='face_pics/')
     date_of_join = models.DateField()
     contact_no = models.IntegerField()
     courses_taught = models.CharField(max_length=255)
@@ -17,7 +17,7 @@ class Teacher(models.Model):
 class Student(models.Model):
     reg = models.ForeignKey(User, on_delete=models.CASCADE)
     username = models.CharField(max_length = 50)
-    pic = models.FileField(upload_to='markapp/static/assets/images/face_pics/')
+    pic = models.FileField(upload_to='face_pics/')
     class_name = models.CharField(max_length=255)
     contact_no = models.IntegerField()
     programme = models.CharField(max_length=255)

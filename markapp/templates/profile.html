@@ -23,7 +23,7 @@
                         <li><a href="about">About</a></li>
                         <li><a href="contact">Contact us</a></li>
                         {% if user.is_authenticated %}
-                        <li><a href="profile" class="active">Profile <img src="{% static 'assets/images/' %}" alt=""></a></li>
+                        <li><a href="profile" class="active">Profile</a></li>
                         {% else %}
                         <li><a href="login_view" class="active">Log in</a></li>                        
                         {% endif %}
@@ -52,16 +52,23 @@
               <div class="main-profile ">
                 <div class="row">
                   <div class="col-lg-4">
-                    <img src="assets/images/profile.jpg" alt="" style="border-radius: 23px;">
+                    {% for prf in profile %}
+                      <img src="{{ prf.pic.url }}" alt="" style="border-radius: 23px;">
+                    {% endfor %}                  
                   </div>
                   <div class="col-lg-4 align-self-center">
                     <div class="main-info header-text">
+                      <div class="col-lg-4">
+                                         
+                      </div>
                       <h4>{% if user.is_superuser %}
-                          admin - {{ user.username }}
+                          admin
+
                           {% elif post == "teacher" %}
-                          teacher{{ teacher.name }} - {{ user.username }}
+                          teacher
+
                           {% else %}
-                          student{{student.name}} - {{user.username}}
+                          student
                           {% endif %}
                       </h4>
                       <div class="main-border-button">
@@ -74,6 +81,7 @@
                           <a href="">View your attendance deets!!</a>
                           {% endif %}
                         {% endif %}
+                        <br>
                         <br>
                         <a href="logout_view" style="background-color: rgb(215, 84, 143); color:white">Logout</a>
 
@@ -94,16 +102,17 @@
                        <li>Login as a teacher to view personas!!!...</li>
 
                        {% else %}
-
-                       <li>Name<span>3</span></li>
-                       <li>Register No <span>16</span></li>
-                       <li>Contact No <span>None</span></li>
-                       <li>Class <span>29</span></li>
-                       <li>Programme <span>None</span></li>
-                       <li>College Name <span>29</span></li>
-                       <li>Attendance percentage <span>29</span></li>
-                       <li>Parent Name <span>None</span></li>
-                       <li>Parent Contact <span>29</span></li>
+                       {% for prf in profile %}
+                        <li>Name<span>{{ prf.username }}</span></li>
+                        <li>Register No <span>{{ prf.reg }}</span></li>
+                        <li>Contact No <span>{{ prf.contact_no }}</span></li>
+                        <li>Class <span>{{ prf.class_name }}</span></li>
+                        <li>Programme <span>{{ prf.programme }}</span></li>
+                        <li>College Name <span>{{ prf.college }}</span></li>
+                        <li>Attendance percentage <span>{{ prf.attendance_percentage }}</span></li>
+                        <li>Parent Name <span>{{ prf.parent_name }}</span></li>
+                        <li>Parent Contact <span>{{ prf.parent_contact }}</span></li>
+                       {% endfor %}
                        {% endif %}
 
                     </ul>
