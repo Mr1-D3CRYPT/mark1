@@ -9,11 +9,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-km&-i2iyq386d0c(s6w6=(^7fsc7o2f(v4&+lo@2%ti_+bx0+%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587 
+EMAIL_USE_TLS = True 
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'ashish.23pmc111@mariancollege.org' 
+EMAIL_HOST_PASSWORD = '23pmc111'  
 
 
 # Application definition
@@ -59,10 +68,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'markproject.wsgi.application'
 
 
+# Database
+# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3', original
+        #'ENGINE': 'django.db.backends.sqlite3',
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'mark1db',
         'USER': 'postgres',
@@ -73,6 +84,8 @@ DATABASES = {
 }
 
 
+# Password validation
+# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -110,8 +123,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'markapp','media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-<<<<<<< HEAD
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-=======
->>>>>>> a0d27bb36cffc90ad835b25155c670b79c2d2c12

@@ -20,7 +20,7 @@
                         <li><a href="about">About</a></li>
                         <li><a href="contact" class="active">Contact us</a></li>
                         {% if user.is_authenticated %}
-                        <li><a href="profile">Profile <img src="{% static 'assets/images/' %}" alt=""></a></li>
+                        <li><a href="profile">Profile  <img src="{% static 'assets/images/' %}" alt=""></a></li>
                         {% else %}
                         <li><a href="login_view">Log in</a></li>                        
                         {% endif %}
@@ -44,28 +44,123 @@
           <!-- ***** Contact form start ***** -->
           <div class="row">
             <div class="col-lg-8">
-              <div class="featured-games header-text">
-                <div class="heading-section">
-                  <h4><em>Talk to us</em></h4>
-                </div>
-                <div>
+              <div class="header-text feature">
 
-                  <form action="post">
-                  </form>
-                 
+                {% if status == "success" %}
+                  <p class="reply-sent">Reply sent !</p>                                                  
+                {% endif %}
+
+                  <div style="color: aliceblue;">
+                    {% if user.is_superuser %}
+                      {% if not message %}
+                        Sorry! No messages to display!!
+                      {%else%}
+                          <table style="color: aliceblue;">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Message</th>
+                                    <th>Remove</th>
+                                    <th>Reply message</th>
+                                    <th>Send mail</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for message in message %}
+                                    <tr>                      
+                                         
+                                            <td name="message_name" class="message_name" >{{ message.name }}</td>
+                                            <td name="message_email" class="message_email" >{{ message.email }}</td>
+                                            <td>{{ message.message }}</td>
+                                            <td> 
+                                              <form action="delete_message" method="post">
+                                                {% csrf_token %}
+                                                  <input type="hidden" name="message_name" value="{{ message.name }}">
+                                                  <input type="hidden" name="message_email" value="{{ message.email }}"> 
+                                                <button type="submit" class="msg_button">Delete</button>
+                                              </form>
+                                            </td>
+                                            
+                                            <form action="send_email" method="post">
+                                              {% csrf_token %}
+                                              <td>
+                                                <section class="formcarry-container" style="margin-top: 0px;">
+                                                <div class="formcarry-block">
+                                                  <input type="hidden" name="message_email" value="{{ message.email }}">
+                                                  <input type="message" name="mail_text" id="mail_text" required placeholder="enter your reply text here..." />
+                                                </div>
+                                              </section>
+                                              </td>
+                                              <td> 
+                                                <button type="submit" class="msg_button">Reply</button>
+                                              </td>
+                                            </form>
+                                        
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                
+                      {%endif%}
+                    {% else %}
+                    <div class="heading-section">
+                      <h4><em>Talk to us</em></h4>
+                    </div>
+                    <div>
+    
+                  </div>
+
+                  <!--send form-->
+                    <section class="formcarry-container">
+                      <form action="message" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="formcarry-block">
+                          <label for="fc-generated-1-name">Full Name</label>
+                          <input type="text" name="name" id="name" required placeholder="Your first and last name" />
+                        </div>
+                        
+                        <div class="formcarry-block">
+                          <label for="fc-generated-1-email">Your Email Address</label>
+                          <input type="email" name="email" id="email" required placeholder="john@doe.com" />
+                        </div>
+                        
+                        <div class="formcarry-block">
+                          <label for="fc-generated-1-message">Your message</label>
+                          <textarea name="message" name="message" id="message" required placeholder="Enter your message..."></textarea>
+                        </div>
+
+                        <div class="message-container">
+                          {% if stats != "nil" %}
+                           <p class="success-message">Message sent successfully!</p>
+                          {% endif %}
+                        </div>
+                        
+                        <div class="formcarry-block">  
+                          <button type="submit">Send</button>
+                        </div>
+                      
+                      </form>
+                    </section>
+              
                 </div>
               </div>
             </div>
 
-
+            <!--the contact no and id-->
+            <br><br>
             <div class="col-lg-4">
-                <div class="heading-section">
-                  <h4>Contact</h4>
-                </div>
-                <p>Phone: +60 828919191 <br>email: mark1@zurichtech.com</p>
+              <div class="heading-section">
+                <h4>Contact</h4>
               </div>
-          </div>
-          <!-- ***** Contact form End ***** -->
+              <p style="color: #999999;">Phone: +60 828919191 <br>email: mark1@zurichtech.com</p>
+            </div>
+            {% endif %}
+ 
+            
+        </div>
+        <!-- ***** Contact form End ***** -->
 
 
         </div>

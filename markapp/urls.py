@@ -12,4 +12,8 @@ urlpatterns = [
     path('login_view',views.login_view),
     path('logout_view',views.logout_view),
     path('take_attendance',views.take_attendance),
+    path('message', views.message),
+    path('delete_message', views.delete_message),
+    path('send_email',views.send_email),
+
 ]

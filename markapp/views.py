@@ -2,8 +2,9 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User,Group
-from markapp.models import Student,Teacher
+from markapp.models import Student,Teacher,Contact
 import cv2
+from django.core.mail import send_mail
 
 def index(request):
     return render(request, 'index.html')
@@ -12,7 +13,35 @@ def about(request):
     return render(request, 'about.html')
 
 def contact(request):
-    return render(request, 'contact.html')
+    message = Contact.objects.all()
+    stats = "nil"
+    status = request.GET.get('status')
+    return render(request, 'contact.html',{"message":message,"stats":stats,"status":status})
+
+def delete_message(request):
+    if request.method == 'POST':
+        message_name = request.POST.get("message_name")
+        message_email = request.POST.get("message_email")
+        message = Contact.objects.filter(name=message_name,email=message_email)
+        message.delete()
+    return redirect('/contact')
+
+def send_email(request):
+    status="failed"
+    if request.method == 'POST':
+        mail_text = request.POST.get("mail_text")
+        mail_id = request.POST.get("message_email")
+
+        subject = 'Reply from Zuric'
+        message = mail_text
+        sender = 'ashish.23pmc111@mariancollege.org'
+        recipient = [mail_id]
+        stat = send_mail(subject, message, sender, recipient)
+        if stat:
+            status = "success"
+            return redirect("/contact?status={}".format(status))
+        return redirect("/contact?status={}".format(status))
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -27,6 +56,17 @@ def login_view(request):
             message = 'enter the correct username and password'
             return render(request, 'login.html', {"message":message})
     return render(request, 'login.html')
+
+
+def message(request):
+    stats = "nil"
+    if request.method == 'POST':
+            name = request.POST.get("name")
+            email = request.POST.get("email")
+            message = request.POST.get("message")
+            stats = Contact.objects.create(name=name, email=email, message=message)
+    return render(request, "contact.html",{"stats":stats})
+
 
 def profile(request):
     user = request.user 

@@ -39,8 +39,8 @@ class Attendance(models.Model):
 
 class Contact(models.Model):
     name = models.CharField(max_length=200)
-    phone_no = models.IntegerField()
-    mail = models.EmailField()
+    email = models.EmailField(default='')
+    message = models.TextField(default=' ')
 
     def __str__(self):
-        return f"{self.name}, {self.phone_no}"
+        return f"{self.name}"
