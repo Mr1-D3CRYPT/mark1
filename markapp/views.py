@@ -10,7 +10,6 @@ from django.core.mail import send_mail
 from datetime import datetime,date
 import face_recognition
 import os
-from markapp.models import Student, Attendance
 from django.shortcuts import redirect
 from datetime import datetime
 
@@ -117,8 +116,6 @@ def mark_attendance(request):
                 user_instance = User.objects.get(username=user_n.reg)
                 try:
                     day_stat = Attendance.objects.get(user=user_instance, day=date_m)
-                    day_stat.status = "p"
-                    day_stat.save()
                 except Attendance.DoesNotExist:
                     day_stat = Attendance.objects.create(user=user_instance, day=date_m)
             except User.DoesNotExist:
@@ -146,7 +143,7 @@ def load_images_from_folder(folder):
             images[filename.split(".")[0]] = face_encodings_list[0]
     return (images)
 
-known_images = load_images_from_folder("markapp/media/face_pics")
+#known_images = load_images_from_folder("markapp/media/face_pics")
 
 def take_attendance(request):
     date_m = datetime.now().date()
@@ -168,6 +165,8 @@ def take_attendance(request):
 
                 date_m = date.today()
                 users_n = Student.objects.all()
+
+                #for all users to mark absent on that day
                 for user_n in users_n:
                     try:
                         user_instance = User.objects.get(username=user_n.reg)
@@ -177,18 +176,18 @@ def take_attendance(request):
                             day_stat = Attendance.objects.create(user=user_instance, day=date_m)
                     except User.DoesNotExist:
                         pass   
+
+                #for the identified users
                 try:
                     users = Student.objects.get(username=name)
                     try:
-                        print("2")
-                        day_stat = Attendance.objects.get(user=users, day=date_m)
+                        day_stat = Attendance.objects.get(user=users.id, day=date_m)
                         day_stat.status = "p"
                         day_stat.save()
                     except Attendance.DoesNotExist:
-                        print("3")
-                        day_stat = Attendance.objects.create(user=users, day=date_m, status="p")
+                        day_stat = Attendance.objects.create(user=users.id, day=date_m, status="p")
                 except:
-                    pass
+                    pass 
 
             cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
             cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
