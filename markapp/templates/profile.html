@@ -76,7 +76,7 @@
                         {% if user.is_authenticated %}
                           {% if post == "teacher" %}
                           <a href="take_attendance">Take attendance</a>
-                          <a href="">View student status</a>
+                          <a href="edit_student">View/edit student status</a>
                           {% else %}
                           <a href="">View your attendance deets!!</a>
                           {% endif %}
@@ -91,18 +91,25 @@
                   <div class="col-lg-4 align-self-center">
                     <ul>
                       {% if post == "teacher" %}
-                       <li>Name<span>3</span></li>
-                       <li>Date of joinee <span>16</span></li>
-                       <li>Contact No <span>None</span></li>
-                       <li>Courses taught <span>29</span></li>
-                       <li>Programme <span>None</span></li>
-                       <li>College Name <span>29</span></li>
+                      {% for prf in profile %}
+                        <li>Name<span>{{ prf.name }}</span></li>
+                        <li>Date of joinee <span>{{ prf.date_of_join }}</span></li>
+                        <li>Contact No <span>{{ prf.contact_no }}</span></li>
+                        <li>Courses taught <span>{{ prf.courses_taught }}</span></li>
+                        <li>Programme <span>{{ prf.programme }}</span></li>
+                        <li>College Name <span>{{ prf.college }}</span></li>
+                      {% endfor %}
 
-                       {% elif user.is_superuser %}
+                      {% elif user.is_superuser %}
                        <li>Login as a teacher to view personas!!!...</li>
+                       <li>
+                        <form action="edit_teacher" method="post">
+                          <button>Edit teacher</button>
+                        </form>
+                       </li>
 
-                       {% else %}
-                       {% for prf in profile %}
+                      {% else %}
+                      {% for prf in profile %}
                         <li>Name<span>{{ prf.username }}</span></li>
                         <li>Register No <span>{{ prf.reg }}</span></li>
                         <li>Contact No <span>{{ prf.contact_no }}</span></li>

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
   
 class Teacher(models.Model):
-    id = models.CharField(max_length = 50, primary_key=True)
+    reg = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     pic = models.FileField(upload_to='face_pics/')
     date_of_join = models.DateField()

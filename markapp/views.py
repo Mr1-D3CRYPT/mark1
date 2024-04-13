@@ -5,6 +5,8 @@ from django.contrib.auth.models import User,Group
 from markapp.models import Student,Teacher,Contact
 import cv2
 from django.core.mail import send_mail
+from django import forms
+from tempus_dominus.widgets import DatePicker
 
 def index(request):
     return render(request, 'index.html')
@@ -39,8 +41,8 @@ def send_email(request):
         stat = send_mail(subject, message, sender, recipient)
         if stat:
             status = "success"
-            return redirect("/contact?status={}".format(status))
         return redirect("/contact?status={}".format(status))
+    return redirect("/contact?status={}".format(status))
 
 
 def login_view(request):
@@ -85,6 +87,12 @@ def logout_view(request):
     logout(request)
     return redirect('/login_view')
 
+
+
+def edit_student(request):
+
+    return render(request,"edit_student.html")
+
 def take_attendance(request):
     import face_recognition
     import os
@@ -98,7 +106,7 @@ def take_attendance(request):
                 images[filename.split(".")[0]] = face_recognition.face_encodings(img)[0]
         return images
 
-    known_images = load_images_from_folder("markapp\static\\assets\images\\face_pics")
+    known_images = load_images_from_folder("markapp\media\\face_pics")
 
     # Get a reference to webcam #0 (the default one)
     video_capture = cv2.VideoCapture(0)
@@ -122,6 +130,7 @@ def take_attendance(request):
             if True in matches:
                 first_match_index = matches.index(True)
                 name = list(known_images.keys())[first_match_index]
+
 
             # Draw a box around the face
             cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
