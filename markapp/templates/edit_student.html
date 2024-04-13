@@ -4,50 +4,70 @@
 {% load static %}
 
 
-  <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <nav class="main-nav">
-                    <a href="profile" class="logo">
-                    <button class="btn" type="button">
-                        <strong>BACK</strong>
-                        <div id="container-stars">
-                          <div id="stars"></div>
-                        </div>
-                      
-                        <div id="glow">
-                          <div class="circle"></div>
-                          <div class="circle"></div>
-                        </div>
-                      </button>
-                    </a>
-                </nav>
-            </div>
-        </div>
-    </div>
-  </header>
-  <!-- ***** Header Area End ***** -->
-
 
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
         <div class="page-content">
+
+            <a href="profile" class="logo">
+                <button class="butn" type="button">
+                    <strong>BACK</strong>
+                    <div id="container-stars">
+                      <div id="stars"></div>
+                    </div>
+                  
+                    <div id="glow">
+                      <div class="circle"></div>
+                      <div class="circle"></div>
+                    </div>
+                  </button>
+                </a>
+
+                <br>
           
           <!-- ***** Detail Start ***** -->
           <div class="row" style="color:white;">
             <div class="col-lg-12">
               <div class="main-profile ">
                 <div class="row">
+                    
+
+                    <form action="edit_student" method="get">
+                        <div class="group">
+                            <input name="name" id="name" type="text" class="input">
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label>name</label>
+                        </div>
+                        <button class="btn-src">search/show all</button>
+                    </form>
+
+
 
                  
-                  <div class="col-lg-4" style="float: left; width: 50%;">
+                  <div class="col-lg-4" style="float: left; width: 50%; padding-top: 10px;">
                     <ul>
-dbschdsdsvhdsv'hdsvndshovdsvhndsv hvhdsvjdsv dsvdsv ds v
-                      {% for prf in profile %}
-                        <li>Name<span>{{ prf.username }}</span></li>
+                    {% if val %}
+
+                    {% for prf in val %}
+                    <li><div style="color: white;display: inline;">{{ forloop.counter }}. </div>Name<span>{{ prf.username }}</span></li>
+                    <li>Register No <span>{{ prf.reg }}</span></li>
+                    <li>Contact No <span>{{ prf.contact_no }}</span></li>
+                    <li>Class <span>{{ prf.class_name }}</span></li>
+                    <li>Programme <span>{{ prf.programme }}</span></li>
+                    <li>College Name <span>{{ prf.college }}</span></li>
+                    <li>Attendance percentage <span>{{ prf.attendance_percentage }}</span></li>
+                    <li>Parent Name <span>{{ prf.parent_name }}</span></li>
+                    <li>Parent Contact <span>{{ prf.parent_contact }}</span></li>
+                   {% endfor %}
+
+                    {% else %}
+
+                      {% for prf in editable %}
+                      
+
+                        <li><div style="color: white;display: inline;">{{ forloop.counter }}. </div>Name<span>{{ prf.username }}</span></li>
                         <li>Register No <span>{{ prf.reg }}</span></li>
                         <li>Contact No <span>{{ prf.contact_no }}</span></li>
                         <li>Class <span>{{ prf.class_name }}</span></li>
@@ -57,6 +77,7 @@ dbschdsdsvhdsv'hdsvndshovdsvhndsv hvhdsvjdsv dsvdsv ds v
                         <li>Parent Name <span>{{ prf.parent_name }}</span></li>
                         <li>Parent Contact <span>{{ prf.parent_contact }}</span></li>
                        {% endfor %}
+                    {% endif %}
 
                     </ul>
                   </div>

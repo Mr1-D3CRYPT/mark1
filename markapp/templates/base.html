@@ -23,7 +23,175 @@
     <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
 
     <style>
-      .btn {
+.group {
+  display: inline-block;
+        vertical-align: top;
+        position: relative;
+}
+.horizontal-line {
+  border: none; /* Remove default border */
+  height: 1px; /* Set the height of the line */
+  background-color: #ccc; /* Set a light gray color for the line */
+  margin: 10px 0; /* Adjust margin as needed */
+}
+
+.editable {
+  border: none; /* Remove the default input border */
+  padding: 5px; /* Add some padding for better readability */
+  background-color: #333; /* Set a dark background color for input fields */
+  color: #fff; /* Set text color to white for better contrast */
+  width: 200px; /* Set a width for input fields */
+  margin-left: 10px; /* Add some margin to align inputs properly */
+}
+
+.btn-src {
+  text-decoration: none;
+  position: relative;
+  border: none;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  color: #fff;
+  width: 9em;
+  height: 2.5em;
+  line-height: 2em;
+  text-align: center;
+  background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+  background-size: 300%;
+  border-radius: 30px;
+  z-index: 1;
+  display: inline-block;
+  vertical-align: top;
+  white-space: nowrap;  
+}
+
+.btn-src:hover {
+  animation: ani 8s linear infinite;
+  border: none;
+}
+
+@keyframes ani {
+  0% {
+    background-position: 0%;
+  }
+
+  100% {
+    background-position: 400%;
+  }
+}
+
+.btn-src:before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  z-index: -1;
+  background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+  background-size: 400%;
+  border-radius: 35px;
+  transition: 1s;
+}
+
+.btn-src:hover::before {
+  filter: blur(20px);
+}
+
+.btn-src:active {
+  background: linear-gradient(32deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+}
+
+
+.input {
+  color: white;
+ font-size: 16px;
+ padding: 10px 10px 10px 5px;
+ display: block;
+ width: 200px;
+ border: none;
+ border-bottom: 1px solid #515151;
+ background: transparent;
+}
+
+.input:focus {
+ outline: none;
+}
+
+label {
+ color: #999;
+ font-size: 18px;
+ font-weight: normal;
+ position: absolute;
+ pointer-events: none;
+ left: 5px;
+ top: 10px;
+ transition: 0.2s ease all;
+ -moz-transition: 0.2s ease all;
+ -webkit-transition: 0.2s ease all;
+}
+
+.input:focus ~ label, .input:valid ~ label {
+ top: -20px;
+ font-size: 14px;
+ color: #5264AE;
+}
+
+.bar {
+ position: relative;
+ display: block;
+ width: 200px;
+}
+
+.bar:before, .bar:after {
+ content: '';
+ height: 2px;
+ width: 0;
+ bottom: 1px;
+ position: absolute;
+ background: #5264AE;
+ transition: 0.2s ease all;
+ -moz-transition: 0.2s ease all;
+ -webkit-transition: 0.2s ease all;
+}
+
+.bar:before {
+ left: 50%;
+}
+
+.bar:after {
+ right: 50%;
+}
+
+.input:focus ~ .bar:before, .input:focus ~ .bar:after {
+ width: 50%;
+}
+
+.highlight {
+ position: absolute;
+ height: 60%;
+ width: 100px;
+ top: 25%;
+ left: 0;
+ pointer-events: none;
+ opacity: 0.5;
+}
+
+.input:focus ~ .highlight {
+ animation: inputHighlighter 0.3s ease;
+}
+
+@keyframes inputHighlighter {
+ from {
+  background: #5264AE;
+ }
+
+ to {
+  width: 0;
+  background: transparent;
+ }
+}
+      .butn {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -83,23 +251,23 @@
         background: rgba(142, 81, 234, 0.704);
       }
 
-      .btn:hover #container-stars {
+      .butn:hover #container-stars {
         z-index: 1;
         background-color: #212121;
       }
 
-      .btn:hover {
+      .butn:hover {
         transform: scale(1.1)
       }
 
-      .btn:active {
+      .butn:active {
         border: double 4px #FE53BB;
         background-origin: border-box;
         background-clip: content-box, border-box;
         animation: none;
       }
 
-      .btn:active .circle {
+      .butn:active .circle {
         background: #FE53BB;
       }
 

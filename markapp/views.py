@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth import login, authenticate, logout
@@ -5,8 +6,6 @@ from django.contrib.auth.models import User,Group
 from markapp.models import Student,Teacher,Contact
 import cv2
 from django.core.mail import send_mail
-from django import forms
-from tempus_dominus.widgets import DatePicker
 
 def index(request):
     return render(request, 'index.html')
@@ -88,25 +87,37 @@ def logout_view(request):
     return redirect('/login_view')
 
 
-
 def edit_student(request):
+    i = 1
+    user = request.user
+    if user.is_authenticated:
+        editable = Student.objects.all()
+        if request.method == "GET":
+            name = request.GET.get("name")
+            val = Student.objects.filter(username=name)
+            return render(request,"edit_student.html",{"val":val,"editable":editable,"i":i})
+        return render(request,"edit_student.html",{"editable":editable,"i":i})
 
-    return render(request,"edit_student.html")
+    else:
+        return redirect('/login')
 
 def take_attendance(request):
     import face_recognition
+    from face_recognition import load_image_file, face_encodings
     import os
 
     # Load known images and create face encodings
     def load_images_from_folder(folder):
         images = {}
         for filename in os.listdir(folder):
-            img = face_recognition.load_image_file(os.path.join(folder, filename))
-            if img is not None:
-                images[filename.split(".")[0]] = face_recognition.face_encodings(img)[0]
+            img_path = os.path.join(folder, filename)
+            img = load_image_file(img_path)
+            face_encodings_list = face_encodings(img)
+            if face_encodings_list:  # Check if the list is not empty
+                images[filename.split(".")[0]] = face_encodings_list[0]
         return images
 
-    known_images = load_images_from_folder("markapp\media\\face_pics")
+    known_images = load_images_from_folder("markapp/media/face_pics")
 
     # Get a reference to webcam #0 (the default one)
     video_capture = cv2.VideoCapture(0)
