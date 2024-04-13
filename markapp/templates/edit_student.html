@@ -36,7 +36,7 @@
                     <form action="edit_student" method="get">
                         <div class="group">
                             <input name="name" id="name" type="text" class="input">
-                            <span class="highlight"></span>
+                            <span class=""></span>
                             <span class="bar"></span>
                             <label>name</label>
                         </div>
@@ -81,13 +81,30 @@
 
                     </ul>
                   </div>
-                  <div class="col-lg-4" style="float: right; width: 50%;">
-                    <p>These days will be marked working days:</p>
-                    <form method="post">
-                        
-                        <button type="submit">Save Attendance</button>
-                    </form>
-                    
+                  <div class="col-lg-4" style="float: right; width: 50%;padding-left: 5%;">
+                    <p>Manually mark attendance for a student:</p>
+                    <div style="text-align: center;">
+                    <form method="get" action="mark_attendance" style="padding-top: 4%;">
+                      {% csrf_token %}
+                      
+                          <div class="group">
+                              <input name="m_name" required placeholder="reg no" id="m_name" type="text" class="input">
+                              <span class=""></span>
+                              <span class="bar"></span>
+                          </div>
+                      
+                      <div style="margin: 20px;"> <!-- Added text-align: center; -->
+                          <style>
+                              input[type="date"]::-webkit-calendar-picker-indicator {
+                                  filter: invert(1);
+                              }
+                          </style>
+                          Date : <input type="date" required name="m_date" style="background-color: #1f2122; margin: 2%;margin-left: 3%; padding-left: 2%; border: none; color: white;margin: 0%;"><br>
+                          <button type="submit" id="singlebutton" name="singlebutton" class="btn" style=" margin-top: 2% ;background-color: rgb(169, 51, 104);color:white">Save Attendance</button>
+                      </div>
+                    </div>
+                  </form>
+                  
                              
                   </div>
                 </div>

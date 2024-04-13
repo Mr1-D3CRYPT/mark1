@@ -32,10 +32,10 @@ class Student(models.Model):
 class Attendance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     day = models.DateField()
-    status = models.CharField(max_length=255)
+    status = models.CharField(default='a')
 
     def __str__(self):
-        return f"{self.id} - {self.day}"
+        return f"{self.user} - {self.day}"
 
 class Contact(models.Model):
     name = models.CharField(max_length=200)
