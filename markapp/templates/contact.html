@@ -20,9 +20,9 @@
                         <li><a href="about">About</a></li>
                         <li><a href="contact" class="active">Contact us</a></li>
                         {% if user.is_authenticated %}
-                        <li><a href="profile">Profile  <img src="{% static 'assets/images/' %}" alt=""></a></li>
+                        <li><a href="profile">Profile  <img src="" alt=""></a></li>
                         {% else %}
-                        <li><a href="login_view">Log in</a></li>                        
+                        <li><a href="login_view">Log in  <img src="" alt=""></a></li>                        
                         {% endif %}
                     </ul>   
                     <a class='menu-trigger'>
@@ -117,17 +117,17 @@
                         {% csrf_token %}
                         
                         <div class="formcarry-block">
-                          <label for="fc-generated-1-name">Full Name</label>
-                          <input type="text" name="name" id="name" required placeholder="Your first and last name" />
+                          <label for="fc-generated-1-name"></label>
+                          <input type="text" name="name" id="name" required placeholder="Your name" />
                         </div>
                         
                         <div class="formcarry-block">
-                          <label for="fc-generated-1-email">Your Email Address</label>
-                          <input type="email" name="email" id="email" required placeholder="john@doe.com" />
+                          <label for="fc-generated-1-email"></label>
+                          <input type="email" name="email" id="email" required placeholder="mail id, eg:  john@doe.com" />
                         </div>
                         
                         <div class="formcarry-block">
-                          <label for="fc-generated-1-message">Your message</label>
+                          <label for="fc-generated-1-message"></label>
                           <textarea name="message" name="message" id="message" required placeholder="Enter your message..."></textarea>
                         </div>
 

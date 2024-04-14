@@ -8,7 +8,6 @@ from markapp.models import Student,Teacher,Contact,Attendance
 import cv2
 from django.core.mail import send_mail
 from datetime import datetime,date
-import face_recognition
 import os
 from django.shortcuts import redirect
 from datetime import datetime
@@ -38,7 +37,6 @@ def send_email(request):
     if request.method == 'POST':
         mail_text = request.POST.get("mail_text")
         mail_id = request.POST.get("message_email")
-
         subject = 'Reply from Zuric'
         message = mail_text
         sender = 'ashish.23pmc111@mariancollege.org'
@@ -60,9 +58,10 @@ def login_view(request):
             login(request, user)
             return redirect('/profile')
         else:
-            message = 'enter the correct username and password'
-            return render(request, 'login.html', {"message":message})
+            message = 'Invalid username or password. Please try again.'
+            return render(request, 'login.html', {"message": message})
     return render(request, 'login.html')
+
 
 
 def message(request):
@@ -78,12 +77,13 @@ def message(request):
 def profile(request):
     user = request.user 
     post = "no one"
+    print(user)
     if user.is_authenticated:
         if user.groups.filter(name='teacher').exists():
             post = "teacher"
-            profile = Teacher.objects.all()
+            profile = Teacher.objects.get(reg=user)
         else:
-            profile = Student.objects.all()
+            profile = Student.objects.get(reg=user)
         return render(request, 'profile.html', {"post":post,"profile":profile})
     else:
         return redirect('/login_view')
@@ -111,42 +111,46 @@ def mark_attendance(request):
         reg = request.GET.get("m_name")
         date_m = request.GET.get("m_date")
         users_n = Student.objects.all()
-        for user_n in users_n:
+        for ur in users_n:
             try:
-                user_instance = User.objects.get(username=user_n.reg)
+                user_instance = User.objects.get(username=ur.reg)
                 try:
                     day_stat = Attendance.objects.get(user=user_instance, day=date_m)
                 except Attendance.DoesNotExist:
                     day_stat = Attendance.objects.create(user=user_instance, day=date_m)
-            except User.DoesNotExist:
+            except Student.DoesNotExist:
                 pass            
         try:
             user_instance = User.objects.get(username=reg)
+            print(user_instance)
             date_m = datetime.strptime(date_m, '%Y-%m-%d').date()
-            try:
+            try:    
                 day_stat = Attendance.objects.get(user=user_instance, day=date_m)
                 day_stat.status = "p"
                 day_stat.save()
             except Attendance.DoesNotExist:
                 day_stat = Attendance.objects.create(user=user_instance, day=date_m, status="p")
         except User.DoesNotExist:
-            pass
+                pass
         return redirect('/edit_student')
 
-def load_images_from_folder(folder):
-    images = {}
-    for filename in os.listdir(folder):
-        img_path = os.path.join(folder, filename)
-        img = face_recognition.load_image_file(img_path)
-        face_encodings_list = face_recognition.face_encodings(img)
-        if face_encodings_list:  
-            images[filename.split(".")[0]] = face_encodings_list[0]
-    return (images)
-
-#known_images = load_images_from_folder("markapp/media/face_pics")
-
 def take_attendance(request):
-    date_m = datetime.now().date()
+    import face_recognition
+
+
+    def load_images_from_folder(folder):
+        images = {}
+        for filename in os.listdir(folder):
+            img_path = os.path.join(folder, filename)
+            img = face_recognition.load_image_file(img_path)
+            face_encodings_list = face_recognition.face_encodings(img)
+            if face_encodings_list:  
+                images[filename.split(".")[0]] = face_encodings_list[0]
+        return images
+
+    known_images = load_images_from_folder("markapp/media/face_pics")
+    
+    date_m = date.today()
     video_capture = cv2.VideoCapture(0)
 
     while True:
@@ -163,7 +167,6 @@ def take_attendance(request):
                 first_match_index = matches.index(True)
                 name = list(known_images.keys())[first_match_index]
 
-                date_m = date.today()
                 users_n = Student.objects.all()
 
                 #for all users to mark absent on that day

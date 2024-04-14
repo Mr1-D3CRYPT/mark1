@@ -27,12 +27,12 @@ class Student(models.Model):
     parent_contact = models.IntegerField()
 
     def __str__(self):
-        return self.username
+        return str(self.reg)
     
 class Attendance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     day = models.DateField()
-    status = models.CharField(default='a')
+    status = models.CharField(default='a', max_length=100)
 
     def __str__(self):
         return f"{self.user} - {self.day}"

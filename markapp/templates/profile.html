@@ -53,9 +53,7 @@
                 <div class="row">
                   <div class="col-lg-4">
                     {% if not user.is_superuser %}
-                    {% for prf in profile %}
-                      <img src="{{ prf.pic.url }}" alt="" style="border-radius: 23px;">
-                    {% endfor %}
+                      <img src="{{ profile.pic.url }}" alt="" style="border-radius: 23px;">
                     {% endif %}
                   </div>
                   <div class="col-lg-4 align-self-center">
@@ -93,14 +91,12 @@
                   <div class="col-lg-4 align-self-center">
                     <ul>
                       {% if post == "teacher" %}
-                      {% for prf in profile %}
-                        <li>Name<span>{{ prf.name }}</span></li>
-                        <li>Date of joinee <span>{{ prf.date_of_join }}</span></li>
-                        <li>Contact No <span>{{ prf.contact_no }}</span></li>
-                        <li>Courses taught <span>{{ prf.courses_taught }}</span></li>
-                        <li>Programme <span>{{ prf.programme }}</span></li>
-                        <li>College Name <span>{{ prf.college }}</span></li>
-                      {% endfor %}
+                        <li>Name<span>{{ profile.name }}</span></li>
+                        <li>Date of joinee <span>{{ profile.date_of_join }}</span></li>
+                        <li>Contact No <span>{{ profile.contact_no }}</span></li>
+                        <li>Courses taught <span>{{ profile.courses_taught }}</span></li>
+                        <li>Programme <span>{{ profile.programme }}</span></li>
+                        <li>College Name <span>{{ profile.college }}</span></li>
 
                       {% elif user.is_superuser %}
                        <li>Login as a teacher to view personas!!!...</li>
@@ -111,17 +107,15 @@
                        </li>
 
                       {% else %}
-                      {% for prf in profile %}
-                        <li>Name<span>{{ prf.username }}</span></li>
-                        <li>Register No <span>{{ prf.reg }}</span></li>
-                        <li>Contact No <span>{{ prf.contact_no }}</span></li>
-                        <li>Class <span>{{ prf.class_name }}</span></li>
-                        <li>Programme <span>{{ prf.programme }}</span></li>
-                        <li>College Name <span>{{ prf.college }}</span></li>
-                        <li>Attendance percentage <span>{{ prf.attendance_percentage }}</span></li>
-                        <li>Parent Name <span>{{ prf.parent_name }}</span></li>
-                        <li>Parent Contact <span>{{ prf.parent_contact }}</span></li>
-                       {% endfor %}
+                        <li>Name<span>{{ profile.username }}</span></li>
+                        <li>Register No <span>{{ profile.reg }}</span></li>
+                        <li>Contact No <span>{{ profile.contact_no }}</span></li>
+                        <li>Class <span>{{ profile.class_name }}</span></li>
+                        <li>Programme <span>{{ profile.programme }}</span></li>
+                        <li>College Name <span>{{ profile.college }}</span></li>
+                        <li>Attendance percentage <span>{{ profile.attendance_percentage }}</span></li>
+                        <li>Parent Name <span>{{ profile.parent_name }}</span></li>
+                        <li>Parent Contact <span>{{ profile.parent_contact }}</span></li>
                        {% endif %}
 
                     </ul>
