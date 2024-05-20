@@ -16,5 +16,7 @@ urlpatterns = [
     path('delete_message', views.delete_message),
     path('send_email',views.send_email),
     path('edit_student',views.edit_student),
+    path('edit_teacher',views.edit_teacher),
     path('mark_attendance',views.mark_attendance),
+    path('view_deets',views.view_deets),
 ]

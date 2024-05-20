@@ -1,0 +1,67 @@
+{%extends "base.html"%}
+{%block content%}
+
+{% load static %}
+
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page-content">
+
+            <a href="profile" class="logo">
+                <button class="butn" type="button">
+                    <strong>BACK</strong>
+                    <div id="container-stars">
+                      <div id="stars"></div>
+                    </div>
+                  
+                    <div id="glow">
+                      <div class="circle"></div>
+                      <div class="circle"></div>
+                    </div>
+                  </button>
+                </a>
+
+                <br>
+          
+          <!-- ***** Detail Start ***** -->
+          <div class="row" style="color:white;">
+            <div class="col-lg-12">
+              <div class="main-profile ">
+                <div class="row">
+                    
+                  <div class="col-lg-4" style="float: left; width: 50%; padding-top: 10px;">
+                    <div class="printdiv" id="printdiv">                 
+
+                      Student register number : {{ user.username }}
+                      <br>
+                      <br>
+                      <ul>
+                        {% for a in attendances %}
+                          <li style="color: white;">{{ a.day }}  -  {{ a.status }}</li>
+                        {% endfor %}
+                      </ul>
+                      <p style="color: red;">* a for absent and p for present</p>
+
+                  </div>
+                  <button onclick="window.printdi()" id="singlebutton" name="singlebutton" class="btn" style="background-color: rgb(169, 51, 104);color:white">Download</button>
+
+                </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!-- ***** Details End ***** -->
+
+          
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+{%endblock%}

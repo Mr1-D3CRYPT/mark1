@@ -11,6 +11,25 @@ from datetime import datetime,date
 import os
 from django.shortcuts import redirect
 from datetime import datetime
+import face_recognition
+
+
+def attd_calc():
+    usr = User.objects.all()
+    for usr in usr:
+        if usr.groups.filter(name='student').exists():
+            att = Attendance.objects.filter(user=usr)
+            p,a = 0,0
+            for at in att:
+                if at.status == 'p':
+                    p += 1
+                else:
+                    a += 1
+            attd = round((p/(a+p))*100,2)
+            stud = Student.objects.get(reg=usr)
+            stud.attendance_percent = attd
+            stud.save()
+
 
 def index(request):
     return render(request, 'index.html')
@@ -49,6 +68,9 @@ def send_email(request):
 
 
 def login_view(request):
+    user = request.user
+    if user.is_authenticated:
+        return redirect('/profile')
     if request.method == 'POST':
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -63,7 +85,6 @@ def login_view(request):
     return render(request, 'login.html')
 
 
-
 def message(request):
     stats = "nil"
     if request.method == 'POST':
@@ -73,20 +94,45 @@ def message(request):
             stats = Contact.objects.create(name=name, email=email, message=message)
     return render(request, "contact.html",{"stats":stats})
 
+def view_deets(request):
+    user = request.user
+    attendances = Attendance.objects.filter(user=user)
+    return render(request,'view_deets.html',{"attendances":attendances})
 
 def profile(request):
     user = request.user 
     post = "no one"
-    print(user)
     if user.is_authenticated:
         if user.groups.filter(name='teacher').exists():
-            post = "teacher"
             profile = Teacher.objects.get(reg=user)
-        else:
+            post = "teacher"
+        elif user.groups.filter(name='student').exists():
             profile = Student.objects.get(reg=user)
-        return render(request, 'profile.html', {"post":post,"profile":profile})
+            post = "student"
+        else:
+            profile = User.objects.get(username=user)
+            post = "admin"
+        try:
+            return render(request, 'profile.html', {"post":post,"profile":profile})
+        except User.DoesNotExist:
+            return redirect('/login_view')
     else:
         return redirect('/login_view')
+    
+def edit_teacher(request):
+    user = request.user
+    if user.is_authenticated:
+        if user.is_superuser:
+            editable = Teacher.objects.all()
+            if request.method == "GET":
+                name = request.GET.get("name")
+                val = Teacher.objects.filter(name=name)
+                return render(request,"edit_teacher.html",{"val":val,"editable":editable})
+            return render(request,"edit_teacher.html",{"editable":editable})
+        else:
+            return redirect('/profile')
+    else:
+        return redirect('/profile')
 
 def logout_view(request):
     logout(request)
@@ -94,19 +140,22 @@ def logout_view(request):
 
 
 def edit_student(request):
-    i = 1
     user = request.user
     if user.is_authenticated:
-        editable = Student.objects.all()
-        if request.method == "GET":
-            name = request.GET.get("name")
-            val = Student.objects.filter(username=name)
-            return render(request,"edit_student.html",{"val":val,"editable":editable,"i":i})
-        return render(request,"edit_student.html",{"editable":editable,"i":i})
+        if user.groups.filter(name='teacher').exists():
+            editable = Student.objects.all()
+            if request.method == "GET":
+                name = request.GET.get("name")
+                val = Student.objects.filter(username=name)
+                return render(request,"edit_student.html",{"val":val,"editable":editable})
+            return render(request,"edit_student.html",{"editable":editable})
+        else:
+            return redirect('/login_view')
     else:
-        return redirect('/login')
+        return redirect('/login_view')
     
 def mark_attendance(request):
+    message = None
     if request.method == 'GET':
         reg = request.GET.get("m_name")
         date_m = request.GET.get("m_date")
@@ -119,10 +168,10 @@ def mark_attendance(request):
                 except Attendance.DoesNotExist:
                     day_stat = Attendance.objects.create(user=user_instance, day=date_m)
             except Student.DoesNotExist:
-                pass            
+                pass   
+            message = "attendance marked successfully"         
         try:
             user_instance = User.objects.get(username=reg)
-            print(user_instance)
             date_m = datetime.strptime(date_m, '%Y-%m-%d').date()
             try:    
                 day_stat = Attendance.objects.get(user=user_instance, day=date_m)
@@ -130,14 +179,13 @@ def mark_attendance(request):
                 day_stat.save()
             except Attendance.DoesNotExist:
                 day_stat = Attendance.objects.create(user=user_instance, day=date_m, status="p")
+            message = "attendance marked successfully"
         except User.DoesNotExist:
                 pass
-        return redirect('/edit_student')
+        attd_calc()
+        return redirect('/edit_student',{"message":message})
 
 def take_attendance(request):
-    import face_recognition
-
-
     def load_images_from_folder(folder):
         images = {}
         for filename in os.listdir(folder):
@@ -165,30 +213,18 @@ def take_attendance(request):
 
             if True in matches:
                 first_match_index = matches.index(True)
-                name = list(known_images.keys())[first_match_index]
-
-                users_n = Student.objects.all()
-
-                #for all users to mark absent on that day
-                for user_n in users_n:
-                    try:
-                        user_instance = User.objects.get(username=user_n.reg)
-                        try:
-                            day_stat = Attendance.objects.get(user=user_instance, day=date_m)
-                        except Attendance.DoesNotExist:
-                            day_stat = Attendance.objects.create(user=user_instance, day=date_m)
-                    except User.DoesNotExist:
-                        pass   
+                name = list(known_images.keys())[first_match_index] 
 
                 #for the identified users
                 try:
-                    users = Student.objects.get(username=name)
+                    pc = "face_pics/"+name+".jpg"
+                    users = Student.objects.get(pic=pc)
                     try:
-                        day_stat = Attendance.objects.get(user=users.id, day=date_m)
+                        day_stat = Attendance.objects.get(user=users.reg, day=date_m)
                         day_stat.status = "p"
                         day_stat.save()
                     except Attendance.DoesNotExist:
-                        day_stat = Attendance.objects.create(user=users.id, day=date_m, status="p")
+                        day_stat = Attendance.objects.create(user=users.reg, day=date_m, status="p")
                 except:
                     pass 
 
@@ -200,6 +236,18 @@ def take_attendance(request):
         cv2.imshow('Video', frame)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            users_n = Student.objects.all()
+            #for all users to mark absent on that day
+            for user_n in users_n:
+                try:
+                    user_instance = User.objects.get(username=user_n.reg)
+                    try:
+                        day_stat = Attendance.objects.get(user=user_instance, day=date_m)
+                    except Attendance.DoesNotExist:
+                        day_stat = Attendance.objects.create(user=user_instance, day=date_m)
+                except User.DoesNotExist:
+                    pass  
+            attd_calc()
             break
 
     video_capture.release()

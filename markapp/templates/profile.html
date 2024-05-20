@@ -54,6 +54,8 @@
                   <div class="col-lg-4">
                     {% if not user.is_superuser %}
                       <img src="{{ profile.pic.url }}" alt="" style="border-radius: 23px;">
+                    {% else %}
+                      <img src="/static/assets/images/admin_profile.jpg" alt="" style="border-radius: 30%;">
                     {% endif %}
                   </div>
                   <div class="col-lg-4 align-self-center">
@@ -62,7 +64,7 @@
                                          
                       </div>
                       <h4>{% if user.is_superuser %}
-                          admin
+                          Hey admin!
 
                           {% elif post == "teacher" %}
                           teacher
@@ -77,8 +79,15 @@
                           {% if post == "teacher" %}
                           <a href="take_attendance">Take attendance</a>
                           <a href="edit_student">View/edit student status</a>
+                          {% elif post == "student" %}
+                          <a href="view_deets">Download your attendance deets!!</a>
                           {% else %}
-                          <a href="">View your attendance deets!!</a>
+                          <ul>
+                            <li>Login as a teacher to view personas!!!...</li>
+                            <div class="main-border-button">
+                              <a href="edit_teacher" style="background-color: rgb(215, 84, 143); color:white">view teachers</a>
+                            </div>
+                          </ul>
                           {% endif %}
                         {% endif %}
                         <br>
@@ -88,38 +97,39 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-4 align-self-center">
-                    <ul>
+
                       {% if post == "teacher" %}
+                      <div class="col-lg-4 align-self-center">
+                        <ul>
                         <li>Name<span>{{ profile.name }}</span></li>
                         <li>Date of joinee <span>{{ profile.date_of_join }}</span></li>
                         <li>Contact No <span>{{ profile.contact_no }}</span></li>
                         <li>Courses taught <span>{{ profile.courses_taught }}</span></li>
                         <li>Programme <span>{{ profile.programme }}</span></li>
                         <li>College Name <span>{{ profile.college }}</span></li>
+                      </ul>
 
                       {% elif user.is_superuser %}
-                       <li>Login as a teacher to view personas!!!...</li>
-                       <li>
-                        <form action="edit_teacher" method="post">
-                          <button>Edit teacher</button>
-                        </form>
-                       </li>
+
+                        
 
                       {% else %}
+                      <div class="col-lg-4 align-self-center">
+                        <ul>
                         <li>Name<span>{{ profile.username }}</span></li>
                         <li>Register No <span>{{ profile.reg }}</span></li>
                         <li>Contact No <span>{{ profile.contact_no }}</span></li>
                         <li>Class <span>{{ profile.class_name }}</span></li>
                         <li>Programme <span>{{ profile.programme }}</span></li>
                         <li>College Name <span>{{ profile.college }}</span></li>
-                        <li>Attendance percentage <span>{{ profile.attendance_percentage }}</span></li>
+                        <li>Attendance percentage <span>{{ profile.attendance_percent }} %</span></li>
                         <li>Parent Name <span>{{ profile.parent_name }}</span></li>
                         <li>Parent Contact <span>{{ profile.parent_contact }}</span></li>
-                       {% endif %}
-
+                        
                     </ul>
                   </div>
+                       {% endif %}
+
                 </div>
 
               </div>

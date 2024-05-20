@@ -22,7 +22,7 @@ class Student(models.Model):
     contact_no = models.IntegerField()
     programme = models.CharField(max_length=255)
     college = models.CharField(max_length=255)
-    attendance_percent = models.IntegerField()
+    attendance_percent = models.DecimalField(max_digits=7, decimal_places=3)
     parent_name = models.CharField(max_length=255)
     parent_contact = models.IntegerField()
 

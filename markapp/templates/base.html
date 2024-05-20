@@ -570,6 +570,16 @@ label {
       /*=====  End of Fields  ======*/
   </style>
 
+  <script>
+    function printdi(){
+      var printdivi = document.getElementById("printdiv").innerHTML;
+      var originalcontent = window.document.body.innerHTML;
+      window.document.body.innerHTML = printdivi;
+      window.print();
+      window.document.body.innerHTML = originalcontent;
+    }
+  </script>
+
   </head>
 
 

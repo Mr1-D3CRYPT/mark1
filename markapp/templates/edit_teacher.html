@@ -1,0 +1,101 @@
+{%extends "base.html"%}
+{%block content%}
+
+{% load static %}
+
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page-content">
+
+            <a href="profile" class="logo">
+                <button class="butn" type="button">
+                    <strong>BACK</strong>
+                    <div id="container-stars">
+                      <div id="stars"></div>
+                    </div>
+                  
+                    <div id="glow">
+                      <div class="circle"></div>
+                      <div class="circle"></div>
+                    </div>
+                  </button>
+                </a>
+
+                <br>
+          
+          <!-- ***** Detail Start ***** -->
+          <div class="row" style="color:white;">
+            <div class="col-lg-12">
+              <div class="main-profile ">
+                <div class="row">
+                    
+
+                    <form action="edit_teacher" method="get">
+                        <div class="group">
+                            <input name="name" id="name" type="text" class="input">
+                            <span class=""></span>
+                            <span class="b  ar"></span>
+                            <label>name</label>
+                        </div>
+                        <button class="btn-src">search/show all</button>
+                    </form>
+
+
+
+                 
+                  <div class="col-lg-4" style="float: left; width: 50%; padding-top: 10px;">
+                    <ul>
+                    {% if val %}
+
+                    {% for profile in val %}
+                    <li style="text-align: center; position: relative;">
+                      <a href="{{ profile.pic.url }}" target="" style="text-decoration: none; color: inherit;">
+                          <img src="{{ profile.pic.url }}" alt="" style="width: 100px; height: 100px; border-radius: 50%;">
+                      </a>
+                    </li>
+                    <li><div style="color: white;display: inline;">{{ forloop.counter }}. </div>Name<span>{{ profile.name }}</span></li>
+                    <li>Date of joinee <span>{{ profile.date_of_join }}</span></li>
+                    <li>Contact No <span>{{ profile.contact_no }}</span></li>
+                    <li>Courses taught <span>{{ profile.courses_taught }}</span></li>
+                    <li>Programme <span>{{ profile.programme }}</span></li>
+                    <li>College Name <span>{{ profile.college }}</span></li>
+                   {% endfor %}
+
+                    {% else %}
+
+                      {% for profile in editable %}
+                        <li style="text-align: center; position: relative;">
+                          <a href="{{ profile.pic.url }}" target="" style="text-decoration: none; color: inherit;">
+                              <img src="{{ profile.pic.url }}" alt="" style="width: 100px; height: 100px; border-radius: 50%;">
+                          </a>
+                        </li>
+                        <li><div style="color: white;display: inline;">{{ forloop.counter }}. </div>Name<span>{{ profile.name }}</span></li>
+                        <li>Date of joinee <span>{{ profile.date_of_join }}</span></li>
+                        <li>Contact No <span>{{ profile.contact_no }}</span></li>
+                        <li>Courses taught <span>{{ profile.courses_taught }}</span></li>
+                        <li>Programme <span>{{ profile.programme }}</span></li>
+                        <li>College Name <span>{{ profile.college }}</span></li>
+                       {% endfor %}
+                    {% endif %}
+
+                    </ul>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!-- ***** Details End ***** -->
+
+          
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+{%endblock%}

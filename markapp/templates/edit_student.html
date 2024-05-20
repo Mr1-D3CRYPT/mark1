@@ -51,13 +51,18 @@
                     {% if val %}
 
                     {% for prf in val %}
+                    <li style="text-align: center; position: relative;">
+                      <a href="{{ prf.pic.url }}" target="" style="text-decoration: none; color: inherit;">
+                          <img src="{{ prf.pic.url }}" alt="" style="width: 100px; height: 100px; border-radius: 50%;">
+                      </a>
+                    </li>
                     <li><div style="color: white;display: inline;">{{ forloop.counter }}. </div>Name<span>{{ prf.username }}</span></li>
                     <li>Register No <span>{{ prf.reg }}</span></li>
                     <li>Contact No <span>{{ prf.contact_no }}</span></li>
                     <li>Class <span>{{ prf.class_name }}</span></li>
                     <li>Programme <span>{{ prf.programme }}</span></li>
                     <li>College Name <span>{{ prf.college }}</span></li>
-                    <li>Attendance percentage <span>{{ prf.attendance_percentage }}</span></li>
+                    <li>Attendance percentage <span>{{ prf.attendance_percent }}</span></li>
                     <li>Parent Name <span>{{ prf.parent_name }}</span></li>
                     <li>Parent Contact <span>{{ prf.parent_contact }}</span></li>
                    {% endfor %}
@@ -65,15 +70,18 @@
                     {% else %}
 
                       {% for prf in editable %}
-                      
-
+                        <li style="text-align: center; position: relative;">
+                          <a href="{{ prf.pic.url }}" target="" style="text-decoration: none; color: inherit;">
+                              <img src="{{ prf.pic.url }}" alt="" style="width: 100px; height: 100px; border-radius: 50%;">
+                          </a>
+                        </li>
                         <li><div style="color: white;display: inline;">{{ forloop.counter }}. </div>Name<span>{{ prf.username }}</span></li>
                         <li>Register No <span>{{ prf.reg }}</span></li>
                         <li>Contact No <span>{{ prf.contact_no }}</span></li>
                         <li>Class <span>{{ prf.class_name }}</span></li>
                         <li>Programme <span>{{ prf.programme }}</span></li>
                         <li>College Name <span>{{ prf.college }}</span></li>
-                        <li>Attendance percentage <span>{{ prf.attendance_percentage }}</span></li>
+                        <li>Attendance percentage <span>{{ prf.attendance_percent }}</span></li>
                         <li>Parent Name <span>{{ prf.parent_name }}</span></li>
                         <li>Parent Contact <span>{{ prf.parent_contact }}</span></li>
                        {% endfor %}
@@ -100,6 +108,11 @@
                               }
                           </style>
                           Date : <input type="date" required name="m_date" style="background-color: #1f2122; margin: 2%;margin-left: 3%; padding-left: 2%; border: none; color: white;margin: 0%;"><br>
+                          ok!!!
+                          {% if message %}
+                          ok!!
+                          {{ message }}
+                          {% endif %}
                           <button type="submit" id="singlebutton" name="singlebutton" class="btn" style=" margin-top: 2% ;background-color: rgb(169, 51, 104);color:white">Save Attendance</button>
                       </div>
                     </div>
